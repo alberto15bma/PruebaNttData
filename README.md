@@ -1,37 +1,22 @@
-# Getting Started with Create React App
+## PRUEBA TECNICA NTT DATA
+ Prueba tecnica
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+*Se agrega pasos para correr el proyecto*
 
-## Available Scripts
+**1. BASE DE DATOS**
+  - NO CUENTA
 
-In the project directory, you can run:
+**2. SERVIDOR**
+  - NO CUENTA
 
-### `npm start`
+**3 CLIENTE**
+  - Clonar el respositorio
+  - Abrir carpeta del proyecto e instalar las dependencias con "npm i"
+  - Entrar al proyecto y abrir el archivo \src\sistema\server.js
+  - Se debe modificar las variables con la ruta del servidor y el puerto (en el caso que lo tenga)
+    - host: "https://bp-pokemons.herokuapp.com", // DIRECCION DEL SERVIDOR
+    - puerto: "", // PUERTO DEL SERVIDOR EN EL CASO QUE LO TENGA
+  - Ejecutar el proyecto con "npm start"
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
+*Se agrega pasos test del proyecto*
+  - Ejecutar el proyecto con "npm test"

@@ -1,10 +1,10 @@
 const SERVER = {
-  ip: "https://bp-pokemons.herokuapp.com", // DIRECCIÓN IP DEL SERVIDOR
+  host: "https://bp-pokemons.herokuapp.com", // HOST DEL SERVIDOR
   puerto: "", // PUERTO DEL SERVIDOR
   sufijo: "",
   url: function (endpoint) {
     // FUNCION QUE RETORNA LA URL CON EL ENDPOINT ENVIADA COMO PARAMETRO
-    return `${this.ip}:${this.puerto}${this.sufijo}${endpoint}`;
+    return `${this.host}:${this.puerto}${this.sufijo}${endpoint}`;
   },
   consulta: function (ruta, parametros = null, method = "POST") {
     const opciones = {};
