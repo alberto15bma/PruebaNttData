@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import '../../estilos/modal.scss'
 import InputButton from './InputButton';
 
@@ -6,8 +6,8 @@ const Modal = ({
   children,
   titulo = "",
   visible = false,
-  onClickSi = null,
-  onClickNo = null,
+  onClickSi,
+  onClickNo,
 }) => {
   return (
     <div className={`modal ${visible && "modal__open"} `}>
