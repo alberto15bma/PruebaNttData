@@ -7,6 +7,7 @@ import {
   eliminarPokemon,
 } from "../services/pokemonService";
 import {
+  ALERTA_NO_EXSITEN_DATOS_GRILLA,
   ERROR_CREAR_REGISTRO,
   ERROR_ELIMINAR_REGISTRO,
   ERROR_MODIFICAR_REGISTRO,
@@ -14,12 +15,15 @@ import {
   EXITO_ELIMINAR_REGISTRO,
   EXITO_MODIFICAR_REGISTRO,
 } from "../sistema/mensajes";
+import dataNotificacion from "../modelos/notificacion";
 
 const PokemonContext = createContext();
 
 const PokemonProvider = ({ children }) => {
   const [pokemons, setPokemons] = useState([]);
   const [pokemonsFiltro, setPokemonsFiltro] = useState([]);
+  const [notificacion, setNotificacion] = useState(dataNotificacion);
+
   const [busqueda, setBusqueda] = useState("");
   let navigate = useNavigate();
   const cargarPokemons = async () => {
@@ -28,49 +32,67 @@ const PokemonProvider = ({ children }) => {
       setPokemons(data);
       setPokemonsFiltro(data);
     } catch (error) {
-      alert(error);
+      mostrarNotificacion({ tipo: "alert", mensaje: error, visible: true });
     }
   };
   const nuevoPokemon = async (obj) => {
     try {
       let data = await crearPokemon(obj);
       if (data !== null) {
-        alert(EXITO_CREAR_REGISTRO);
+        mostrarNotificacion({
+          tipo: "exito",
+          mensaje: EXITO_CREAR_REGISTRO,
+          visible: true,
+        });
         cargarPokemons();
         navigate("/");
       } else throw ERROR_CREAR_REGISTRO;
     } catch (error) {
-      alert(error);
+      mostrarNotificacion({ tipo: "error", mensaje: error, visible: true });
     }
   };
   const modificarPokemon = async (obj) => {
     try {
       let data = await editarPokemon(obj);
       if (data !== null) {
-        alert(EXITO_MODIFICAR_REGISTRO);
+        mostrarNotificacion({
+          tipo: "exito",
+          mensaje: EXITO_MODIFICAR_REGISTRO,
+          visible: true,
+        });
         cargarPokemons();
         navigate("/");
       } else throw ERROR_MODIFICAR_REGISTRO;
     } catch (error) {
-      alert(error);
+      mostrarNotificacion({ tipo: "error", mensaje: error, visible: true });
     }
   };
-  const borrarPokemon = async ({ name, id }) => {
+  const borrarPokemon = async (id, setVisibleModalEliminar) => {
+    setVisibleModalEliminar(false);
     try {
-      let res = window.confirm(`¿Está seguro de eliminar el pokemon: ${name}?`);
-      if (res) {
-        let data = await eliminarPokemon(id);
-        if (data !== null) {
-          alert(EXITO_ELIMINAR_REGISTRO + id);
-          cargarPokemons();
-        } else throw ERROR_ELIMINAR_REGISTRO;
-      }
+      let data = await eliminarPokemon(id);
+      if (data !== null) {
+        mostrarNotificacion({
+          tipo: "exito",
+          mensaje: EXITO_ELIMINAR_REGISTRO + id,
+          visible: true,
+        });
+        cargarPokemons();
+      } else throw ERROR_ELIMINAR_REGISTRO;
     } catch (error) {
-      alert(error);
+      mostrarNotificacion({ tipo: "error", mensaje: error, visible: true });
     }
   };
   const buscarPokemon = async (e) => {
     if (e.key === "Enter") {
+      if (pokemonsFiltro.length <= 0) {
+        mostrarNotificacion({
+          tipo: "alert",
+          mensaje: ALERTA_NO_EXSITEN_DATOS_GRILLA,
+          visible: true,
+        });
+        return false;
+      }
       if (busqueda.length > 0) {
         let filtro = pokemonsFiltro.filter(
           (e) =>
@@ -87,6 +109,10 @@ const PokemonProvider = ({ children }) => {
     e.preventDefault();
     navigate("/");
   };
+  const mostrarNotificacion = (data) => {
+    setNotificacion(data);
+  };
+
   const data = {
     pokemons,
     cargarPokemons,
@@ -97,6 +123,9 @@ const PokemonProvider = ({ children }) => {
     buscarPokemon,
     busqueda,
     setBusqueda,
+    notificacion,
+    mostrarNotificacion,
+    setNotificacion,
   };
   return (
     <PokemonContext.Provider value={data}>{children}</PokemonContext.Provider>

@@ -11,6 +11,7 @@ const InputText = ({
   return (
     <input
       type="text"
+      required
       placeholder={placeholder}
       className={clases}
       id={"txt_" + nombre}

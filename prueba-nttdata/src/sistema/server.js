@@ -27,7 +27,13 @@ const SERVER = {
               mensaje: res.statusText || "Ocurrió un error",
             })
       )
-      .catch((err) => err);
+      .catch((err) => {
+       return Promise.reject({
+          error: true,
+          estado: err.status || "00",
+          mensaje: err.statusText || "Ocurrió un error",
+        });
+      });
   },
 };
 

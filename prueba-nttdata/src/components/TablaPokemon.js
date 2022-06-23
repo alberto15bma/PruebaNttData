@@ -1,12 +1,20 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import PokemonContext from "../context/PokemonContext";
+import Modal from "./formulario/Modal";
 import PokemonItem from "./PokemonItem";
 
 const TablaPokemon = () => {
-  const { pokemons, cargarPokemons, borrarPokemon } =  useContext(PokemonContext);
+  const { pokemons, cargarPokemons, borrarPokemon } =
+    useContext(PokemonContext);
+  const [idPokemon, setIdPokemon] = useState(0);
+  const [visibleModalEliminar, setVisibleModalEliminar] = useState(false);
   useEffect(() => {
     cargarPokemons();
   }, []);
+  const confirmarBorrarPokemon = async (pokemon) => {
+    setIdPokemon(pokemon.id);
+    setVisibleModalEliminar(true);
+  };
   return (
     <section className="main__principal">
       <div>
@@ -26,7 +34,7 @@ const TablaPokemon = () => {
                 <PokemonItem
                   key={e.id}
                   pokemon={e}
-                  borrarPokemon={borrarPokemon}
+                  borrarPokemon={() => confirmarBorrarPokemon(e)}
                 />
               ))
             ) : (
@@ -37,6 +45,14 @@ const TablaPokemon = () => {
           </tbody>
         </table>
       </div>
+      <Modal
+        visible={visibleModalEliminar}
+        titulo="Eliminar pokemon"
+        onClickSi={() => borrarPokemon(idPokemon, setVisibleModalEliminar)}
+        onClickNo={() => setVisibleModalEliminar(false)}
+      >
+        ¿Estás seguro de borrar el pokemon con ID: {idPokemon}?
+      </Modal>
     </section>
   );
 };

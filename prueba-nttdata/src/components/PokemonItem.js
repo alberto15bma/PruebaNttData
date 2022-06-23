@@ -18,10 +18,7 @@ const PokemonItem = ({ pokemon, borrarPokemon }) => {
         >
           <AiFillEdit />
         </Link>
-        <button
-          className="main__table__contenido__btn"
-          onClick={() => borrarPokemon(pokemon)}
-        >
+        <button className="main__table__contenido__btn" onClick={borrarPokemon}>
           <RiDeleteBin2Fill />
         </button>
       </td>

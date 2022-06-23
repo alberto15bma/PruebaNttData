@@ -1,0 +1,26 @@
+.content__notificacion {
+  background: $color_notificacion_error;
+  padding: 2px 10px;
+  color: $color_blanco;
+  border-radius: $border_radius_principal;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__cerrar {
+        font-weight: bold;
+        font-size: 22px;
+        cursor: pointer;
+        transition: 0.3s;
+  }
+  &__error {
+    background: $color_notificacion_error;
+  }
+  &__alert {
+    background: $color_notificacion_alerta;
+  }
+  &__exito {
+    background: $color_notificacion_exito;
+  }
+}

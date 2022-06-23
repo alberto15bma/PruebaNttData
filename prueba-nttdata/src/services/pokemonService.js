@@ -8,7 +8,12 @@ import SERVER from "../sistema/server";
  * @since 21/06/2022
  */
 const getPokomons = async () => {
-  let res = await SERVER.consulta("?idAuthor=1", null, "GET");
+  let res = [];
+  try {
+    res = await SERVER.consulta("?idAuthor=1", null, "GET");
+  } catch (error) {
+    res = [];
+  }
   return res;
 };
 /**
@@ -37,10 +42,15 @@ const getPokomon = async (id) => {
  */
 const crearPokemon = async (obj) => {
   obj.idAuthor = obj.id_author;
-  let res = await SERVER.consulta("?idAuthor=1", obj, "POST");
-  if (res.success === false) return null;
+  let res = null;
+  try {
+    res = await SERVER.consulta("?idAuthor=1", obj, "POST");
+    if (res.success === false) return null;
+  } catch (error) {
+    res = null;
+  }
   return res;
-}
+};
 /**
  * Metodo que edita un pokemon
  *
@@ -50,8 +60,13 @@ const crearPokemon = async (obj) => {
  */
 const editarPokemon = async (obj) => {
   obj.idAuthor = obj.id_author;
-  let res = await SERVER.consulta(`/${obj.id}`, obj, "PUT");
-  if (res.success === false) return null;
+  let res = null;
+  try {
+    res = await SERVER.consulta(`/${obj.id}`, obj, "PUT");
+    if (res.success === false) return null;
+  } catch (error) {
+    res = null;
+  }
   return res;
 };
 /**
@@ -62,9 +77,14 @@ const editarPokemon = async (obj) => {
  * @since 21/06/2022
  */
 const eliminarPokemon = async (id) => {
-  let res = await SERVER.consulta(`/${id}`, null, "DELETE");
-  if (res.success === false) return null;
-  if (res.error === true) return null;
+  let res = null;
+  try {
+    res = await SERVER.consulta(`/${id}`, null, "DELETE");
+    if (res.success === false) return null;
+    if (res.error === true) return null;
+  } catch (error) {
+    res = null;
+  }
   return res;
 };
 

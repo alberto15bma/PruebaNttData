@@ -4,17 +4,23 @@ import { useNavigate, useParams } from "react-router-dom";
 import PokemonContext from "../context/PokemonContext";
 import data from "../modelos/pokemon";
 import { getPokomon } from "../services/pokemonService";
-import { ERROR_OBTENER_REGISTRO } from "../sistema/mensajes";
+import {
+  ERROR_CAMPO_IMAGEN,
+  ERROR_CAMPO_NOMBRE,
+  ERROR_OBTENER_REGISTRO,
+} from "../sistema/mensajes";
 import InputButton from "./formulario/InputButton";
 import InputText from "./formulario/InputText";
+import Modal from "./formulario/Modal";
 
 const FormularioPokemon = () => {
-  const { modificarPokemon, nuevoPokemon, cancelarForm } =
+  const { modificarPokemon, nuevoPokemon, cancelarForm, mostrarNotificacion } =
     useContext(PokemonContext);
   const { id } = useParams();
   const botonGuardar = useRef();
   const [form, setForm] = useState(data);
   const [esEditar, setEsEditar] = useState(false);
+  const [visibleModalNuevo, setVisibleModalNuevo] = useState(false);
   let navigate = useNavigate();
 
   const eventoForm = (e) => {
@@ -22,10 +28,35 @@ const FormularioPokemon = () => {
     if (form === {}) botonGuardar.current.classList.add("frm__disbled__boton");
     else botonGuardar.current.classList.remove("frm__disbled__boton");
   };
-
-  const enviarForm = async (e) => {
+  const confirmarEnvioForm = async (e) => {
     e.preventDefault();
-    botonGuardar.current.classList.toggle("frm__disbled__boton");
+    if (id) {
+      await modificarPokemon(form);
+    } else {
+      botonGuardar.current.classList.add("frm__disbled__boton");
+      setVisibleModalNuevo(true);
+      botonGuardar.current.classList.remove("frm__disbled__boton");
+    }
+  };
+  const enviarForm = async (e) => {
+    setVisibleModalNuevo(false);
+    if (form.name.length <= 0) {
+      alert(ERROR_CAMPO_NOMBRE);
+      mostrarNotificacion({
+        tipo: "error",
+        mensaje: ERROR_CAMPO_NOMBRE,
+        visible: true,
+      });
+      return;
+    }
+    if (form.image.length <= 0) {
+      mostrarNotificacion({
+        tipo: "error",
+        mensaje: ERROR_CAMPO_IMAGEN,
+        visible: true,
+      });
+      return;
+    }
     if (id) {
       await modificarPokemon(form);
     } else {
@@ -47,16 +78,21 @@ const FormularioPokemon = () => {
         botonGuardar.current.classList.add("frm__disbled__boton");
       }
     } catch (error) {
-      alert(error);
+      mostrarNotificacion({
+        tipo: "error",
+        mensaje: error,
+        visible: true,
+      });
       navigate("/");
     }
   };
   useEffect(() => {
     cargarData();
+    window.scrollTo(0, document.body.scrollHeight);
   }, [id]);
   return (
     <section className="frm__agregar">
-      <form onSubmit={enviarForm}>
+      <form onSubmit={confirmarEnvioForm}>
         <h3 className="frm__titulo">
           {esEditar === true ? "Editar Pokemon" : "Nuevo Pokemon"}
         </h3>
@@ -128,6 +164,14 @@ const FormularioPokemon = () => {
           />
         </div>
       </form>
+      <Modal
+        visible={visibleModalNuevo}
+        titulo="Nuevo pokemon"
+        onClickSi={enviarForm}
+        onClickNo={() => setVisibleModalNuevo(false)}
+      >
+        ¿Estás seguro de crear el nuevo pokemon?
+      </Modal>
     </section>
   );
 };

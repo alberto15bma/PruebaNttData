@@ -3,11 +3,12 @@ const InputButton = ({
   icono = null,
   onClick = null,
   clases = "",
-  refer = null
+  refer = null,
+  estilos = null
 }) => {
   let cls = "frm__boton " + clases;
   return (
-    <button className={cls} onClick={onClick} ref={refer}>
+    <button className={cls} onClick={onClick} ref={refer} style={estilos}>
       {icono}
       <span>{value}</span>
     </button>

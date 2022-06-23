@@ -1,12 +1,13 @@
 @import "./colores.scss";
 @import "./parametros.scss";
-
+@import "./notificacion.scss";
 
 *,
 html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-size: 13px;
 }
 
 body {
@@ -21,7 +22,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
   height: 100%;
-  font-size: 13px;
+  overflow-x: hidden;
+  transition: 0.3s;
 }
 
 main {
@@ -70,7 +72,8 @@ main {
   border-radius: $border_radius_principal;
   display: flex;
   align-items: center;
-
+  min-width: 45px;
+  justify-content: center;
   span {
     margin: 0px 5px;
   }
